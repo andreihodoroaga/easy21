@@ -1,5 +1,7 @@
 from enum import Enum
 import random
+from itertools import product
+import numpy as np
 
 
 class Action(Enum):
@@ -52,3 +54,16 @@ class Env:
             reward = 1
 
         return (dealer_sum, player_sum, reward, True)
+
+
+def initializeQ():
+    possible_states_dealer = np.arange(1, 11)
+    possible_states_player = np.arange(1, 22)
+    possible_states = list(product(possible_states_dealer, possible_states_player))
+
+    Q = {}
+    for state in possible_states:
+        Q[state] = {}
+        for action in Action:
+            Q[state][action.value] = 0
+    return Q
