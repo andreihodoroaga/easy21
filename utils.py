@@ -40,7 +40,7 @@ def compute_mean_squared_error(current_Q, optimal_Q):
 
 
 def get_optimal_Q():
-    with open("optimal_Q.json", "r") as json_file:
+    with open("shared/optimal_Q.json", "r") as json_file:
         optimal_Q_json = json.load(json_file)
 
     # de-stringify dict keys
