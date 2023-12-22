@@ -1,4 +1,5 @@
 from env import *
+import json
 
 
 def intializeWithZero():
@@ -26,3 +27,29 @@ def epsilon_greedy(Q, N_0, N_s, state):
         return random.choice([action.value for action in Action])
 
     return max(action_values, key=lambda k: action_values[k])
+
+
+def compute_mean_squared_error(current_Q, optimal_Q):
+    mse = 0
+
+    for state in current_Q.keys():
+        for action in current_Q[state].keys():
+            mse += (optimal_Q[state][action] - current_Q[state][action]) ** 2
+
+    return mse
+
+
+def get_optimal_Q():
+    with open("optimal_Q.json", "r") as json_file:
+        optimal_Q_json = json.load(json_file)
+
+    # de-stringify dict keys
+    optimal_Q = {}
+    for outer_key_str, inner_dict in optimal_Q_json.items():
+        outer_key = eval(outer_key_str)
+        inner_dict_original_keys = {
+            eval(inner_key): value for inner_key, value in inner_dict.items()
+        }
+        optimal_Q[outer_key] = inner_dict_original_keys
+
+    return optimal_Q
